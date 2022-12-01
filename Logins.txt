@@ -1,0 +1,11 @@
+Admin:
+Email: admin@administration.com
+Password: admin
+
+Delivery Guy:
+Email: deliverer@delivery.com
+Password: deliverer
+
+Customer:
+Email: linda@gmail.com
+Password: linda

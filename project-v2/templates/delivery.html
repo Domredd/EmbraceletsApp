@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
+    <link href="{{ url_for('static', filename='fixed/css/home.css')}}" rel="stylesheet" media="all">
+
+</head>
+
+<body>
+
+    <div class="header">
+        <a href="/home" class="logo">Jewellery Shop</a>
+        <div class="header-right">
+            <a class="active" href="/logout">Logout</a>
+        </div>
+    </div>
+
+    <div style="padding-left:20px">
+        <h1>Orders Details</h1>
+        <p>
+            <input type="text" id="myInput" onkeyup="filtering()" placeholder="Filter by Customer...">&emsp;
+            <input type="text" id="myInput2" onkeyup="filtering2()" placeholder="Filter by Location...">
+        </p>
+        <table id="myTable">
+            <tr>
+                <th>
+                    Order <br> Number
+                </th>
+                <th>
+                    Customer
+                </th>
+                <th>
+                    Type
+                </th>
+                <th>
+                    Method
+                </th>
+                <th>
+                    Location
+                </th>
+                <th>
+                    Delivery
+                </th>
+                <th>
+                    Count
+                </th>
+                <th>
+                    Price
+                </th>
+                <th>
+                    Date
+                </th>
+                <th>
+                    Contact
+                </th>
+                <th>
+                    Status
+                </th>
+            </tr>
+            {% for i in items %}
+            <tr>
+                <td>
+                    {{i[0]}}
+                </td>
+                <td>
+                    {{i[3]}}
+                </td>
+                <td>
+                    {{i[2]}}
+                </td>
+                <td>
+                    {{i[5]}}
+                </td>
+                <td>
+                    {{i[6]}}
+                </td>
+                <td>
+                    {{i[7]}}
+                </td>
+                <td>
+                    {{i[8]}}
+                </td>
+                <td>
+                    {{i[9]}}
+                </td>
+                <td>
+                    {{i[10]}}
+                </td>
+                <td>
+                    {{i[11]}}
+                </td>
+                <td>
+                    {{i[12]}}
+                </td>
+                <td style="text-align:center">
+                    <form action="/successful" method="POST">
+                        <input type="hidden" name="id" value="{{i[0]}}">
+                        <button type="submit" style="color:green">Successful</button>
+                    </form>
+                    <form action="/failed" method="POST">
+                        <input type="hidden" name="id" value="{{i[0]}}">
+                        <button type="submit" style="color:red">Failed</button>
+                    </form>
+                </td>
+            </tr>
+            {%endfor%}
+        </table>
+    </div>
+
+    <script type="text/javascript">
+        function filtering() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+        function filtering2() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("myInput2");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[4];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+
+</body>
+
+</html>

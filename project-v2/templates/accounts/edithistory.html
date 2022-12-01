@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', filename='fixed/css/home.css')}}" rel="stylesheet" media="all">
+
+</head>
+
+<body>
+
+    <div class="header">
+        <a href="/home" class="logo">Jewellery Shop</a>
+        <div class="header-right">
+            <a class="active" href="/home">Home</a>
+            {% if not user %}
+            <a href="/signin">Login</a>
+            {% else %}
+            <a href="/editprofile">Edit</a>
+            <a href="/history/{{user}}">View</a>
+            <a href="/logout">Logout</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div style="padding-left:20px">
+
+        <h1>Editing Item</h1>
+        <p>You will edit following item:</p>
+        <br>
+        <p><b>Order ID: </b>{{old[0]}}</p>
+        <p><b>Name: </b>{{old[2]}}</p>
+        {%if error %}
+        <p style="color:red">Item out of stock!</p>
+        {%endif%}
+        <form action="/edit_action" method="POST">
+            <input type="hidden" name="historyid" value="{{old[0]}}"></input>
+            <input type="hidden" name="id" value="{{old[1]}}"></input>
+            <p><b>Quantity</b>
+                <nobr>
+                    <div class="counter">
+                        <span class="down" onClick='decreaseCount(event, this)'>-</span>
+                        <input type="hidden" value="{{old[8]}}" name="count_old">
+                        <input type="text" value="{{old[8]}}" name="count">
+                        <span class="up" onClick='increaseCount(event, this)'>+</span>
+                        {% set pricing = old[9]/(old[8]|int) %}
+                        <input type="hidden" id="basePrice" value="{{pricing}}"></input>
+                        <span id="currentPrice" style="margin-left: 20px;">{{old[9]}}</span>
+                    </div>
+                </nobr>
+            </p>
+            <p><b>Payment Method</b></p>
+            {% if old[5]=='Bank Transfer'%}
+            <input type="radio" name="method" value="Cash On Delivery" >Cash On Delivery<br>
+            <input type="radio" name="method" value="Bank Transfer" checked>Bank Transfer<br>
+            {%else%}
+            <input type="radio" name="method" value="Cash On Delivery" checked>Cash On Delivery<br>
+            <input type="radio" name="method" value="Bank Transfer" >Bank Transfer<br>
+            {%endif%}
+            <br>
+            <br>
+            <label for="cars"><b>Choose location:</b></label>
+            {% if old[6]=='Spanish Town'%}
+            <select name="loc" id="loc">
+                <option value="Spanish Town" selected>Spanish Town</option>
+                <option value="Kingstone">Kingstone</option>
+                <option value="St. Andrw">St.Andrw</option>
+            </select>
+            {% elif old[6]=='Kingstone'%}
+            <select name="loc" id="loc">
+                <option value="Spanish Town" >Spanish Town</option>
+                <option value="Kingstone" selected>Kingstone</option>
+                <option value="St. Andrw">St.Andrw</option>
+            </select>
+            {%else%}
+            <select name="loc" id="loc">
+                <option value="Spanish Town" >Spanish Town</option>
+                <option value="Kingstone" >Kingstone</option>
+                <option value="St. Andrw" selected>St.Andrw</option>
+            </select>
+            {%endif%}
+            <button class="btn btn--radius-2 btn--blue" type="submit">Edit</button>
+        </form>
+    </div>
+    <script type="text/javascript">
+        function increaseCount(a, b) {
+            var input = b.previousElementSibling;
+            var value = parseInt(input.value, 10);
+            value = isNaN(value) ? 0 : value;
+            value++;
+            input.value = value;
+            document.getElementById("currentPrice").innerHTML = parseInt(document.getElementById("basePrice").value) * value;
+        }
+        function decreaseCount(a, b) {
+            var input = b.nextElementSibling;
+            var value = parseInt(input.value, 10);
+            if (value > 1) {
+                value = isNaN(value) ? 0 : value;
+                value--;
+                input.value = value;
+                document.getElementById("currentPrice").innerHTML = parseInt(document.getElementById("basePrice").value) * value;
+            }
+        }
+
+    </script>
+</body>
+
+</html>

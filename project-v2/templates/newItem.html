@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', filename='fixed/css/home.css')}}" rel="stylesheet" media="all">
+
+</head>
+
+<body>
+
+    <div class="header">
+        <a href="/home" class="logo">Jewellery Shop</a>
+        <div class="header-right">
+            <a class="active" href="/logout">Logout</a>
+        </div>
+    </div>
+
+    <div style="padding-left:20px">
+
+        <h1>Add Item To Inventory</h1>
+        <form action="/add_item" method="POST">
+            <label for="type"><b>Choose Item Type:</b></label>
+            <select name="type" id="type">
+                <option value="Bracelet">Bracelet</option>
+                <option value="Necklace">Necklace</option>
+            </select>
+
+            <p><b>Name</b></p>
+            <input type="text" name="name">
+
+            <p><b>Total Items</b></p>
+            <input type="number" name="total">
+
+            <p><b>Price Per Item</b></p>
+            <input type="number" name="price">
+            <br>
+            <button class="btn btn--radius-2 btn--blue" type="submit">Add to Inventory</button>
+        </form>
+    </div>
+</body>
+
+</html>
